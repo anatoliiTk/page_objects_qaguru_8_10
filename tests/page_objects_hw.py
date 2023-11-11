@@ -1,37 +1,36 @@
 import os.path
-
 from selene import browser, command, have
+from page_objects_qaguru_8_10.resources import RegistrationPage
 
 
 def test_tools_qa():
+    #открытие браузера
+    registration_page = RegistrationPage()
+    registration_page.open()
+
     #заполнение формы
-    browser.open('https://demoqa.com/automation-practice-form')
-    browser.element('#firstName').type('Anatolii')
-    browser.element('#lastName').type('Tkach')
-    browser.element('#userEmail').type('tkach.vip@gmail.com')
-    browser.element('[for="gender-radio-1"]').click()
-    browser.element('#userNumber').type('5503913933')
-    browser.element('#dateOfBirthInput').click()
-    browser.element('[class="react-datepicker__month-select"]').click().element('[value="2"]').click()
-    browser.element('[class="react-datepicker__year-select"]').click().element('[value="1999"]').click()
-    browser.element('[class="react-datepicker__day react-datepicker__day--008"]').click()
-    browser.element('#subjectsInput').type('Maths').press_enter()
-    browser.element('[id="stateCity-label"]').perform(command.js.scroll_into_view)
-    browser.element('[for="hobbies-checkbox-1"]').click()
-    browser.element('[id="uploadPicture"]').send_keys(os.path.abspath('image/cat.jpg'))
-    browser.element('[id="currentAddress"]').type('Pushkin 22').perform(command.js.scroll_into_view)
-    browser.element('#react-select-3-input').type('NCR').press_enter()
-    browser.element('#react-select-4-input').type('Delhi').press_enter()
-    browser.element('[id="submit"]').press_enter()
+    registration_page.fill_full_name("Anatolii", 'Tkach')
+    registration_page.fill_mail('tkach.vip@gmail.com')
+    registration_page.click_male()
+    registration_page.fill_number('0550391393')
+    registration_page.choose_date_of_birth(month='2', year='1999', day='08')
+    registration_page.choose_subjects('Maths')
+    registration_page.command_scroll()
+    registration_page.choose_hobbies()
+    registration_page.add_image('../page_objects_qaguru_8_10/image/cat.jpg')
+    registration_page.fill_current_address('Pushkin 22')
+    registration_page.chosse_state('NCR')
+    registration_page.chosse_city('Delhi')
+    registration_page.press_enter()
 
     #проверка резльтата
-    browser.element('.modal-title').should(have.text('Thanks for submitting the form'))
+    registration_page.student_form_should_have_text('Thanks for submitting the form')
     browser.all('tbody td:nth-of-type(2)').should(have.exact_texts(
         'Anatolii Tkach',
         'tkach.vip@gmail.com',
         'Male',
-        '5503913933',
-        '08 March,1999',
+        '0550391393',
+        '08 November,1999',
         'Maths',
         'Sports',
         'cat.jpg',
