@@ -1,5 +1,9 @@
-from selene import browser, command, have
+from selene import browser, command, have, be
 import os
+
+import tests
+from page_objects_qaguru_8_10 import resource
+
 
 class RegistrationPage:
     def open (self):
@@ -25,8 +29,10 @@ class RegistrationPage:
         browser.element('[id="stateCity-label"]').perform(command.js.scroll_into_view)
     def choose_hobbies(self):
         browser.element('[for="hobbies-checkbox-1"]').click()
+
     def add_image(self, image):
-        browser.element('[id="uploadPicture"]').send_keys(os.path.abspath(image))
+        browser.element('#uploadPicture').should(be.visible).type(resource.path(image))
+
     def fill_current_address(self, address):
         browser.element('[id="currentAddress"]').type(address).perform(command.js.scroll_into_view)
     def chosse_state(self, state):

@@ -1,6 +1,5 @@
-import os.path
-from selene import browser, command, have
-from page_objects_qaguru_8_10.resources import RegistrationPage
+from selene import browser, have
+from page_objects_qaguru_8_10.pages.registration_page import RegistrationPage
 
 
 def test_tools_qa():
@@ -17,7 +16,7 @@ def test_tools_qa():
     registration_page.choose_subjects('Maths')
     registration_page.command_scroll()
     registration_page.choose_hobbies()
-    registration_page.add_image('../page_objects_qaguru_8_10/image/cat.jpg')
+    registration_page.add_image('cat.jpg')
     registration_page.fill_current_address('Pushkin 22')
     registration_page.chosse_state('NCR')
     registration_page.chosse_city('Delhi')
